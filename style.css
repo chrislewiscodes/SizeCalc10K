@@ -1,0 +1,357 @@
+
+* {
+	font-family: "Scout RE", Verdana, sans-serif;
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	line-height: 1em;
+	font-weight: normal;
+	font-style: normal;
+	text-rendering: optimizeLegibility;
+	-webkit-text-size-adjust: none;
+}
+
+div.clearer {
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	clear: both;
+}
+
+body {
+	position: relative;
+	color: #000;
+	background: #FFF;
+	margin: 0 auto;
+	padding: 0;
+}
+
+#formwrapper {
+	text-align: center;
+}
+
+form {
+	display: inline-block;
+	background-color: rgba(255,255,255,0.9);
+	padding: 1em 2em;
+	text-align: left;
+}
+
+a:link, a:visited {
+	color: #999;
+	text-decoration: none;
+}
+
+a:active {
+	position: relative;
+	top: 1px;
+	right: -1px;
+}
+
+a:hover, a:active {
+	color: #990000;
+}
+
+h1, h2, h3, h4 {
+	line-height: 1em;
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+	margin-bottom: .5em;
+}
+
+h1 a:link, h1 a:hover, h1 a:visited {
+	font-family: "Scout Cond Black", Impact, sans-serif;
+	font-weight: normal;
+	font-size: 8em;
+	line-height: .85em;
+	margin-bottom: 0.25em;
+	color: black;
+}
+
+@media (max-width:640px) {
+	* {
+		font-size: 11px;
+	}
+	h1 a:link, h1 a:hover, h1 a:visited {
+		font-size: 6em;
+	}
+}
+
+@media (max-width:480px) {
+	* {
+		font-size: 10px;
+	}
+	h1 a:link, h1 a:hover, h1 a:visited {
+		font-size: 4em;
+	}
+}
+
+h2 {
+	font-family: "Scout";
+	font-weight: 800;
+	font-size: 3em;
+}
+
+h3 {
+	font-family: "Scout RE",sans-serif;
+	font-weight: bold;
+	font-size: 1.2em;
+/*	margin-left: -1.5em; */
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+h3 * {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+h4 {
+	font-size: 1em;
+	font-weight: bold;
+	margin: 2em 0 1em 0;
+}
+
+h5 {
+	font-size: 1em;
+}
+
+
+.solve-for {
+	position: relative;
+	display: inline-block;
+	margin-right: 4em;
+}
+
+.solve-for.perceived-size {
+	margin-right: 0;
+}
+
+.solved {
+	font-weight: bold;
+}
+
+.distance {
+	color: #FF0000;
+}
+
+.perceived-size {
+	color: #39A848;
+}
+
+.physical-size {
+	color: #00ABFF;
+}
+
+input[type="radio"] {
+	line-height: 1em;
+	width: 1em;
+	margin-right: .75em;
+}
+
+input[type="number"] {
+	display: inline-block;
+	text-align: right;
+	width: 10em;
+	height: 1.5em;
+}
+
+input[type="range"] {
+	display: block;
+	width: 18em;
+	padding: 1em;
+}
+
+
+@font-face {
+	font-family: 'icomoon';
+	src:url('fonts/icomoon.eot');
+	src:url('fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+		url('fonts/icomoon.ttf') format('truetype'),
+		url('fonts/icomoon.woff') format('woff'),
+		url('fonts/icomoon.svg#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+label.lock {
+	position: absolute;
+	right: 101%;
+	width: 1em;
+	height: 1em;
+	font-family: icomoon;
+	padding-top: 5px;
+}
+
+input[type="checkbox"] {
+	display: none;
+}
+
+input.lock + label.lock:after {
+	content: "\1f513"; /* unlocked */
+}
+
+input.lock:checked + label.lock:after {
+	content: "\1f512"; /* locked */
+}
+
+b, strong {
+	font-weight: bold;
+}
+i, em, cite {
+	font-style: italic;
+}
+p, ul, ol, figcaption {
+	line-height: 1.5em;
+}
+p + p {
+	margin-top: 1.2em;
+}
+ul, ol {
+	margin: 1em 1em 1.5em 1.4em;
+}
+li {
+	line-height: 1.5em;
+	margin-bottom: 0.5em;
+}
+blockquote {
+	background: #eee;
+	padding: 1.5em;
+	margin: 1.5em 0;
+}
+pre, code {
+	font-family: "Alix FB", monospace;
+	line-height: 1.2em;
+	white-space: pre-wrap;
+}
+pre, figure {
+	margin: 2em 0 2em 0;
+}
+figcaption, figcaption * {
+	font-size: 11px;
+	margin-top: .5em;
+}
+mark {
+	background-color: #FF0;
+	font-family: BentonModernRe;
+}
+mark:before {
+	content: "[";
+}
+mark:after {
+	content: "]";
+}
+del {
+	color: #BBB;
+}
+ins {
+	color: #393;
+	text-decoration: none;
+}
+
+#illustration_container_container {
+	overflow: hidden;
+}
+
+#illustration_container {
+	position: relative;
+	padding: 0 12px;
+	overflow: hidden;
+	min-height: 320px;
+}
+
+#man {
+	position: relative;
+}
+
+#man.default {
+	width: 207px;
+	height: 1024px;
+}
+
+#illustration {
+	position: absolute;
+	left: 1%;
+	top: 0;
+	z-index: 2;
+}
+
+
+#object {
+	position: absolute;
+	z-index: 1;
+}
+
+
+
+#replacetheman {
+	position: absolute;
+	z-index: 100;
+	padding: 1em;
+	background-color: white;
+	box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.5);
+}
+
+#replacetheman > * + * {
+	margin-top: 1em;
+}
+
+#replacetheman label {
+	display: block;
+}
+
+#replacetheman input[type=text] {
+	width: 30em;
+	margin-right: 1em;
+}
+
+#replacetheman input[type=number], #replacetheman input[name=height] {
+	width: 5em;
+	margin-right: 1em;
+}
+
+#replacetheman button {
+	padding: 0.3em;
+}
+
+#replacetheman img {
+	max-width: 100%;
+	max-height: 80%;
+	max-height: calc(100% - 4em);
+	cursor: crosshair;
+}
+
+img.unloaded {
+	position: absolute;
+	visibility: hidden;
+}
+
+
+#credits {
+	position: absolute;
+	right: 6px;
+	bottom: 4px;
+	font-size: 9px;
+	z-index: 2;
+	white-space: nowrap;
+	color: #999;
+	padding-left: 30px;
+	padding-top: 30px;
+}
+
+#credits:hover {
+	color: black;
+	font-size: 11px;
+}
+
+#credits a {
+	font-size: inherit;
+	text-decoration: underline;
+	color: inherit;
+}
+
+#credits:hover a {
+	color: #00ABFF;
+}
+
