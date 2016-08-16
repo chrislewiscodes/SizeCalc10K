@@ -124,7 +124,7 @@ h5 {
 	margin-right: 4em;
 }
 
-.solve-for.perceived-size {
+.solve-for.angle {
 	margin-right: 0;
 }
 
@@ -136,11 +136,11 @@ h5 {
 	color: #FF0000;
 }
 
-.perceived-size {
+.angle {
 	color: #39A848;
 }
 
-.physical-size {
+.size {
 	color: #00ABFF;
 }
 
