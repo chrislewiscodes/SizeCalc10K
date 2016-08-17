@@ -52,11 +52,11 @@
 			);
 			
 			//always set the values to something sensible even if nonsense was given
-			$this->d = is_numeric($distance) ? (float)$distance : 3;
+			$this->d = is_numeric($distance) ? (float)$distance : 6;
 			$this->du = isset($this->LENGTH[$dunits]) ? $dunits : 'feet';
 			$this->s = is_numeric($size) ? (float)$size : 12;
 			$this->su = isset($this->LENGTH[$sunits]) ? $sunits : 'inches';
-			$this->a = is_numeric($angle) ? (float)$angle : 18.924644;
+			$this->a = is_numeric($angle) ? (float)$angle : 9.527;
 			$this->au = isset($this->ANGLE[$aunits]) ? $aunits : 'degrees';
 		}
 	
@@ -190,6 +190,8 @@
 			$size = $this->absoluteValue('size');
 			$angle = $this->absoluteValue('angle');
 
+			$halfsize = $size/2;
+
 			$distance_color = '#FF0000';
 			$size_color = '#00ABFF';
 			$angle_color = '#39A848';
@@ -202,22 +204,28 @@
 			$arc_height = 2 * $arc_radius * sin($angle/2);
 			
 			
-			$human_height = 66; //5 foot 6, arbitrary
-			$human_width = $human_height * 144.1 / 704.5; //from svg viewbox
+			//$human_height = 66; //5 foot 6, arbitrary
+			//$human_width = $human_height * 144.1 / 704.5; //from svg viewbox
 			
-			$eye_x = $human_width * 0.7;
-			$eye_y = $human_width * 0.333;
+			$human_height = 48;
+			$human_width = $human_height * 267/183;
+			
+			//$eye_x = $human_width * 0.7;
+			//$eye_y = $human_width * 0.333;
+			
+			$eye_x = $human_width * 0.75;
+			$eye_y = $human_width * 0.07;
 			
 			$human_x = 0;
-			$human_y = max(0, $size/2 - $eye_y);
+			$human_y = max(0, $halfsize - $eye_y);
 			
 			$eye_y += $human_y;
 			
-			$corner1 = array($eye_x+$distance, $eye_y-$size/2);
-			$corner2 = array($eye_x+$distance, $eye_y+$size/2);
+			$corner1 = array($eye_x+$distance, $eye_y-$halfsize);
+			$corner2 = array($eye_x+$distance, $eye_y+$halfsize);
 			
 			$fontsize = $size * 1;
-			$fontpos = array($corner1[0] + $size/2 - 0.8*$fontsize/2, $corner1[1] + $size/2 + $fontsize*0.36);
+			$fontpos = array($corner1[0] + $halfsize - 0.8*$fontsize/2, $corner1[1] + $halfsize + $fontsize*0.36);
 			
 			$image_width = $eye_x + $distance + $size;
 			$image_height = max($human_y + $human_height, $size);
@@ -242,9 +250,8 @@
 EOF;
 			}
 
-			print <<<EOF
-<svg id="observer" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{$px_width}px" height="{$px_height}px" viewBox="0 0 {$image_width} {$image_height}">
-	<!-- the observer -->
+/*
+	//original man
 	<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="{$human_x}" y="{$human_y}" width="{$human_width}" height="{$human_height}" 
 		 viewBox="1 15.5 145.6 720">
 	<path d="M47,15.5c-5.7,0.6-14.1,7.3-16.5,10.9c-0.8,2-1.6,4-2.4,6c-1.2,1.9-4.1,1.3-6.1,2.5c-2.5,1.4-7.7,5.3-8.8,8.1
@@ -270,6 +277,79 @@ EOF;
 		c-1-1.5-5.6-10.4-4.6-13.4c0.9-2.6,3.9-4.3,1.8-8.9c-2.7-5.9-10.2-8.6-15.7-12c-3.6-2.2-8-8.9-13.9-4.2c-1.1-0.6-1.5-1.5-2.4-2.3
 		c-1.6,0.8-3.5,2-4.3,2.7C62.8,16.8,53.1,19.2,47,15.5z"/>
 	</svg>
+*/
+
+/* //original object
+	<rect fill="#EEEEEE" stroke="none" stroke-width="{$onepx}" x="{$corner1[0]}" y="{$corner1[1]}" width="$size" height="$size" />
+	<text x="{$fontpos[0]}" y="{$fontpos[1]}" style="font-family:Verdana,sans-serif;font-weight:bold;font-size:{$fontsize};stroke:none;fill:black">A</text>
+*/
+			$ribbon = implode(',', array(
+				"M{$corner1[0]},{$corner1[1]}",
+				'l' . ($size*0.5) . ',' . ($size*0.6),
+				'l' . ($size*0.5) . ',-' . ($size*0.6),
+				'l-' . ($size*0.15) . ',0',
+				'l-' . ($size*0.35) . ',' . ($size*0.45),
+				'l-' . ($size*0.35) . ',-' . ($size*0.45),
+				'z',
+			));
+			$medal = array($corner1[0]+$halfsize, $corner1[1] + $size*0.75, $size*0.27, $size*0.2);
+
+			print <<<EOF
+<svg id="visualization" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{$px_width}px" height="{$px_height}px" viewBox="0 0 {$image_width} {$image_height}">
+	<!-- the observer -->
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<svg
+	   xmlns:dc="http://purl.org/dc/elements/1.1/"
+	   xmlns:cc="http://creativecommons.org/ns#"
+	   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	   xmlns:svg="http://www.w3.org/2000/svg"
+	   xmlns="http://www.w3.org/2000/svg"
+	   version="1.0"
+	   x="{$human_x}" y="{$human_y}"
+	   width="{$human_width}"
+	   height="{$human_height}"
+	   viewBox="20 62 267 183"
+	   id="svg2">
+	  <defs
+	     id="defs20" />
+	  <metadata
+	     id="metadata4">
+	<rdf:RDF>
+	  <cc:Work
+	     rdf:about="">
+	    <dc:format>image/svg+xml</dc:format>
+	    <dc:type
+	       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+	    <dc:title></dc:title>
+	  </cc:Work>
+	</rdf:RDF>
+	</metadata>
+	  <g
+	     transform="matrix(0.1,0,0,-0.1,0,300)"
+	     id="g6"
+	     style="fill:#000000;stroke:none">
+	    <path
+	       d="M 883,2359 C 744,2339 586,2291 475,2236 308,2152 224,2093 244,2072 c 3,-2 33,5 67,17 34,11 154,33 267,48 194,26 210,26 355,15 178,-14 308,-39 398,-77 107,-44 129,-47 166,-22 77,52 78,136 1,201 -107,92 -381,138 -615,105 z"
+	       id="path8"
+	       style="fill:#0084c9;fill-opacity:1;stroke:none" />
+	    <path
+	       d="m 1969,2333 c -109,-56 -148,-168 -96,-276 68,-139 248,-169 359,-60 179,175 -37,450 -263,336 z"
+	       id="path10" />
+	    <path
+	       d="m 1989,1832 c -159,-102 -145,-432 25,-540 35,-22 55,-27 131,-30 168,-8 367,61 496,171 98,83 201,247 155,247 -13,0 -90.5414,-54.755 -145.9886,-93.8764 C 2594.5641,1547.0022 2437,1484 2341,1465 c -116,-24 -166,-17 -208,29 -37,40 -41,68 -22,171 15,79 5,130 -31,167 -16,15 -32,28 -37,28 -5,0 -29,-13 -54,-28 z"
+	       id="path12"
+	       style="fill:#e5053a;fill-opacity:1;stroke:none" />
+	    <path
+	       d="m 753,1770 c -81,-49 -84,-156 -9,-339 73,-178 73,-246 -3,-361 C 666,955 447,751 280,640 c -79,-52 -75,-49 -68,-56 11,-10 269,85 372,138 365,188 519,382 476,601 -14,72 -104,356 -126,399 -16,32 -52.7869,65.8764 -116.13494,62.3821 C 803.86506,1784.3821 771,1781 753,1770 z"
+	       id="path14"
+	       style="fill:#fca311;fill-opacity:1;stroke:none" />
+	    <path
+	       d="m 1101,1662 c -39,-39 -41,-86 -5,-162 48,-105 197,-216 383,-286 47,-18 87,-39 89,-46 1,-8 -16,-24 -38,-37 -23,-12 -114,-73 -203,-134 -89,-62 -198,-133 -242,-159 -53,-32 -73,-48 -58,-48 12,0 98,15 191,34 236,48 405,120 525,226 57,51 77,86 77,138 0,33 -8,48 -57,102 -58,64 -255,233 -338,290 -109.3253,73.8424 -190,100 -245,107 -40.5057,-0.6179 -51,3 -79,-25 z"
+	       id="path16"
+	       style="fill:#009e49;fill-opacity:1;stroke:none" />
+	  </g>
+	</svg>
 
 	<!-- arrowhead -->
 	<defs>
@@ -277,11 +357,16 @@ EOF;
 	</defs>
 
 	<!-- the object -->
-	<rect fill="#EEEEEE" stroke="none" stroke-width="{$onepx}" x="{$corner1[0]}" y="{$corner1[1]}" width="$size" height="$size" />
+	<g transform="translate(-{$arrowsize}, 0)">
+	<path fill="#CCCCCC" stroke="none" d="{$ribbon}" transform="translate({$medal[0]},0) scale(0.7,1) translate(-{$medal[0]},0)"/>
+	<circle fill="gold" stroke="none" cx="{$medal[0]}" cy="{$medal[1]}" r="{$medal[2]}"/>
+	<circle fill="none" stroke="#FC6" stroke-width="$onepx" cx="{$medal[0]}" cy="{$medal[1]}" r="{$medal[3]}"/>
+	</g>
+
+	<!-- the size -->
 	<path fill="none" stroke="{$size_color}" stroke-width="{$onepx}" d="M{$corner1[0]},{$corner1[1]} l0,{$size}"/>
 	<use xlink:href='#arrowhead' fill="{$size_color}" transform="translate({$corner1[0]},{$corner1[1]})"/>
 	<use xlink:href='#arrowhead' fill="{$size_color}" transform="translate({$corner2[0]},{$corner2[1]}) rotate(180)"/>
-	<text x="{$fontpos[0]}" y="{$fontpos[1]}" style="font-family:Verdana,sans-serif;font-weight:bold;font-size:{$fontsize};stroke:none;fill:black">A</text>
 
 	<!-- the angle -->
 	<path fill="none" stroke="{$angle_color}" stroke-width="{$onepx}" stroke-dasharray="$dashlength" d="M{$corner1[0]},{$corner1[1]}L{$eye_x},{$eye_y}L{$corner2[0]},{$corner2[1]}"/>
@@ -355,62 +440,62 @@ EOF;
 <body>
 
 <div id='formwrapper'>
-<form>
+<form method="get">
 	<h1><a href='./'>Size Calculator</a></h1>
 	<!--<h2>Solve for …</h2>-->
-	<p>Enter any two values and click the <button type="button"><?php print $button; ?></button> to calculate the third.</p>
+	<p>Enter any two values and click the <button type="button" aria-disabled><?php print $button; ?></button> to calculate the third.</p>
 	
 	<div class="solve-for distance" data-what="distance">
 		<h3>
-			<!--<label><input tabindex='1' type="radio" name="solve-for" value="distance">Viewing distance</label>-->
-			Viewing Distance
+			<!--<label><input type="radio" name="solve-for" value="distance">Viewing distance</label>-->
+			<label for='distance-value'>Viewing Distance</label>
 		</h3>
 		<!--
 		<input type='checkbox' id='distance-lock' value='lock' class='lock'><label class='lock' for='distance-lock' title='Lock this value'></label>
 		-->
-		<input tabindex='2' id='distance-value' type="number" name="distance" min="0" step="any" value="<?php echo $sizecalc->fieldValue('distance'); ?>">
-		<select tabindex='2' class='length' id='distance-units' name="distance-units">
+		<input id='distance-value' type="number" name="distance" min="0" step="any" value="<?php echo $sizecalc->fieldValue('distance'); ?>">
+		<select class='length' id='distance-units' name="distance-units" aria-label="Units for distance">
 			<?php $sizecalc->printLengthOptions('distance', 3); ?>
 		</select>
-		<button name="solve-for" type="submit" value="distance"><?php print $button; ?></button>
+		<button name="solve-for" type="submit" value="distance" aria-label="Calculate distance"><?php print $button; ?></button>
 		<!--
-		<input tabindex='3' type="range" name="distance-range">
+		<input type="range" name="distance-range">
 		-->
 	</div>
 	
 	<div class="solve-for size" data-what="size">
-		<h3>
-			<!--<label><input tabindex='1' type="radio" name="solve-for" value="size">Physical size</label>-->
-			Physical Size
+		<h3 id='size-label'>
+			<!--<label><input type="radio" name="solve-for" value="size">Physical size</label>-->
+			<label for='size-value'>Physical Size</label>
 		</h3>
 		<!--
 		<input type='checkbox' id='size-lock' value='lock' class='lock'><label class='lock' for='size-lock' title='Lock this value'></label>
 		-->
-		<input tabindex='2' id='size-value' type="number" name="size" min="0" step="any" value="<?php echo $sizecalc->fieldValue('size'); ?>">
-		<select tabindex='2' class='length' id='size-units' name="size-units">
+		<input id='size-value' type="number" name="size" min="0" step="any" value="<?php echo $sizecalc->fieldValue('size'); ?>">
+		<select class='length' id='size-units' name="size-units" aria-label="Units for physical size">
 			<?php $sizecalc->printLengthOptions('size', 3); ?>
 		</select>
-		<button name="solve-for" type="submit" value="size"><?php print $button; ?></button>
+		<button name="solve-for" type="submit" value="size" aria-label="Calculate physical size"><?php print $button; ?></button>
 		<!--
-		<input tabindex='3' type="range" name="size-range">
+		<input type="range" name="size-range">
 		-->
 	</div>
 	
 	<div class="solve-for angle" data-what="angle">
-		<h3>
-			<!--<label><input tabindex='1' type="radio" name="solve-for" value="angle">Perceived size</label>-->
-			Perceived Size
+		<h3 id='angle-label'>
+			<!--<label><input type="radio" name="solve-for" value="angle">Perceived size</label>-->
+			<label for='angle-value'>Perceived Size</label>
 		</h3>
 		<!--
 		<input type='checkbox' id='angle-lock' value='lock' class='lock'><label class='lock' for='angle-lock' title='Lock this value'></label>
 		-->
-		<input tabindex='2' id='angle-value' type="number" name="angle" min="0" step="any" value="<?php echo $sizecalc->fieldValue('angle'); ?>">
-		<select tabindex='2' class='angle' id='angle-units' name="angle-units">
+		<input id='angle-value' type="number" name="angle" min="0" step="any" value="<?php echo $sizecalc->fieldValue('angle'); ?>">
+		<select class='angle' id='angle-units' name="angle-units" aria-label="Units for perceived-size angle">
 			<?php $sizecalc->printAngleOptions('angle', 3); ?>
 		</select>
-		<button name="solve-for" type="submit" value="angle"><?php print $button; ?></button>
+		<button name="solve-for" type="submit" value="angle" aria-label="Calculate perceived size"><?php print $button; ?></button>
 		<!--
-		<input tabindex='3' type="range" name="angle-range" min='1' max='179'>
+		<input type="range" name="angle-range" min='1' max='179'>
 		-->
 	</div>
 	
@@ -418,7 +503,9 @@ EOF;
 </form>
 </div>
 
+<figure id='visualization-container'>
 <?php $sizecalc->printSVG(true); ?>
+</figure>
 
 <div id='credits'>
 Size&nbsp;Calculator is a project by <a href='http://nicksherman.com/'>Nick&nbsp;Sherman</a> and <a href='http://chrislewis.codes/'>Chris&nbsp;Lewis</a>. Follow&nbsp;<a href='https://twitter.com/SizeCalculator'>@SizeCalculator</a> on&nbsp;Twitter.
