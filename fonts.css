@@ -1,0 +1,29 @@
+@font-face {
+	font-family: "Output Sans Web";
+	font-weight: normal;
+	font-style: normal;
+	src: url("fonts/OutputSans-Regular.eot");
+	src: url("fonts/OutputSans-Regular.eot?#") format("embedded-opentype"),
+		url("fonts/OutputSans-Regular.woff") format("woff"),
+		url("fonts/OutputSans-Regular.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Output Sans Web";
+	font-weight: bold;
+	font-style: normal;
+	src: url("fonts/OutputSans-Bold.eot");
+	src: url("fonts/OutputSans-Bold.eot?#") format("embedded-opentype"),
+		url("fonts/OutputSans-Bold.woff") format("woff"),
+		url("fonts/OutputSans-Bold.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Output Sans Web";
+	font-weight: 800;
+	font-style: normal;
+	src: url("fonts/OutputSans-Black.eot");
+	src: url("fonts/OutputSans-Black.eot?#") format("embedded-opentype"),
+		url("fonts/OutputSans-Black.woff") format("woff"),
+		url("fonts/OutputSans-Black.woff2") format("woff2");
+}

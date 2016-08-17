@@ -1,9 +1,9 @@
 
 * {
-	font-family: "Scout RE", Verdana, sans-serif;
+	font-family: "Output Sans Web", "Trebuchet MS", sans-serif;
 	margin: 0;
 	padding: 0;
-	font-size: 12px;
+	font-size: 16px;
 	line-height: 1em;
 	font-weight: normal;
 	font-style: normal;
@@ -11,12 +11,8 @@
 	-webkit-text-size-adjust: none;
 }
 
-div.clearer {
-	width: 0;
-	height: 0;
-	margin: 0;
-	padding: 0;
-	clear: both;
+html {
+	overflow: hidden;
 }
 
 body {
@@ -61,45 +57,43 @@ h1, h2, h3, h4 {
 }
 
 h1 a:link, h1 a:hover, h1 a:visited {
-	font-family: "Scout Cond Black", Impact, sans-serif;
-	font-weight: normal;
-	font-size: 8em;
+	font-family: "Output Sans Web", Impact, sans-serif;
+	font-weight: 800;
+	font-size: 4em;
 	line-height: .85em;
 	margin-bottom: 0.25em;
 	color: black;
 }
 
-@media (max-width:640px) {
+@media (max-width:667px) {
 	* {
-		font-size: 11px;
+		font-size: 14px;
 	}
 	h1 a:link, h1 a:hover, h1 a:visited {
-		font-size: 6em;
+		font-size: 3.5em;
 	}
 }
 
 @media (max-width:480px) {
 	* {
-		font-size: 10px;
+		font-size: 12px;
 	}
 	h1 a:link, h1 a:hover, h1 a:visited {
-		font-size: 4em;
+		font-size: 3em;
 	}
 }
 
 h2 {
-	font-family: "Scout";
 	font-weight: 800;
 	font-size: 3em;
 }
 
 h3 {
-	font-family: "Scout RE",sans-serif;
 	font-weight: bold;
 	font-size: 1.2em;
 /*	margin-left: -1.5em; */
 	margin-top: 1em;
-	margin-bottom: 1em;
+	margin-bottom: 0.3em;
 }
 
 h3 * {
@@ -107,21 +101,11 @@ h3 * {
 	font-size: 1.2em;
 }
 
-h4 {
-	font-size: 1em;
-	font-weight: bold;
-	margin: 2em 0 1em 0;
-}
-
-h5 {
-	font-size: 1em;
-}
-
 
 .solve-for {
 	position: relative;
 	display: inline-block;
-	margin-right: 4em;
+	margin-right: 3em;
 }
 
 .solve-for.angle {
@@ -153,7 +137,7 @@ input[type="radio"] {
 input[type="number"] {
 	display: inline-block;
 	text-align: right;
-	width: 10em;
+	width: 7em;
 	height: 1.5em;
 }
 
@@ -196,6 +180,10 @@ input.lock:checked + label.lock:after {
 	content: "\1f512"; /* locked */
 }
 
+button {
+	padding: 0.2em 0.5em;
+}
+
 b, strong {
 	font-weight: bold;
 }
@@ -215,134 +203,30 @@ li {
 	line-height: 1.5em;
 	margin-bottom: 0.5em;
 }
-blockquote {
-	background: #eee;
-	padding: 1.5em;
-	margin: 1.5em 0;
-}
-pre, code {
-	font-family: "Alix FB", monospace;
-	line-height: 1.2em;
-	white-space: pre-wrap;
-}
-pre, figure {
-	margin: 2em 0 2em 0;
-}
-figcaption, figcaption * {
-	font-size: 11px;
-	margin-top: .5em;
-}
-mark {
-	background-color: #FF0;
-	font-family: BentonModernRe;
-}
-mark:before {
-	content: "[";
-}
-mark:after {
-	content: "]";
-}
-del {
-	color: #BBB;
-}
-ins {
-	color: #393;
-	text-decoration: none;
-}
 
-#illustration_container_container {
-	overflow: hidden;
-}
-
-#illustration_container {
+#observer {
 	position: relative;
-	padding: 0 12px;
-	overflow: hidden;
-	min-height: 320px;
+	padding: 1%;
+	width: 98%;
 }
-
-#man {
-	position: relative;
-}
-
-#man.default {
-	width: 207px;
-	height: 1024px;
-}
-
-#illustration {
-	position: absolute;
-	left: 1%;
-	top: 0;
-	z-index: 2;
-}
-
-
-#object {
-	position: absolute;
-	z-index: 1;
-}
-
-
-
-#replacetheman {
-	position: absolute;
-	z-index: 100;
-	padding: 1em;
-	background-color: white;
-	box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.5);
-}
-
-#replacetheman > * + * {
-	margin-top: 1em;
-}
-
-#replacetheman label {
-	display: block;
-}
-
-#replacetheman input[type=text] {
-	width: 30em;
-	margin-right: 1em;
-}
-
-#replacetheman input[type=number], #replacetheman input[name=height] {
-	width: 5em;
-	margin-right: 1em;
-}
-
-#replacetheman button {
-	padding: 0.3em;
-}
-
-#replacetheman img {
-	max-width: 100%;
-	max-height: 80%;
-	max-height: calc(100% - 4em);
-	cursor: crosshair;
-}
-
-img.unloaded {
-	position: absolute;
-	visibility: hidden;
-}
-
 
 #credits {
-	position: absolute;
+	position: fixed;
 	right: 6px;
 	bottom: 4px;
-	font-size: 9px;
+	text-align: right;
+	font-size: 10px;
 	z-index: 2;
-	white-space: nowrap;
+	/* white-space: nowrap; */
 	color: #999;
 	padding-left: 30px;
 	padding-top: 30px;
+	line-height: 1.5;
 }
 
 #credits:hover {
 	color: black;
-	font-size: 11px;
+	font-size: 12px;
 }
 
 #credits a {

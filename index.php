@@ -16,6 +16,8 @@
 
 	class SizeCalculator {
 		private $sliderFactor = 5;
+		private $precision = 3;
+
 		private $d, $du;
 		private $s, $su;
 		private $a, $au;
@@ -90,13 +92,23 @@
 	
 			switch ($field) {
 				case 'distance': 
-					return $this->d = round($physical/2 / tan($perceived/2/$this->ANGLE['radians']) / $distanceratio, 6);
+					return $this->d = round($physical/2 / tan($perceived/2/$this->ANGLE['radians']) / $distanceratio, $this->precision);
 				
 				case 'size':
-					return $this->s = round(2 * $distance * tan($perceived/2/$this->ANGLE['radians']) / $physicalratio, 6);
+					return $this->s = round(2 * $distance * tan($perceived/2/$this->ANGLE['radians']) / $physicalratio, $this->precision);
 				
 				case 'angle':
-					return $this->a = round(2 * atan2($physical/2,$distance)*$this->ANGLE['radians'] / $perceivedratio, 6);
+					return $this->a = round(2 * atan2($physical/2,$distance)*$this->ANGLE['radians'] / $perceivedratio, $this->precision);
+			}
+		}
+		
+		public function absoluteValue($field) {
+			$letter = $field[0];
+			$unit = $letter . 'u';
+			if (isset($this->ANGLE[$this->$unit])) {
+				return $this->$letter * $this->ANGLE[$this->$unit];
+			} else {
+				return $this->$letter * $this->LENGTH[$this->$unit];
 			}
 		}
 		
@@ -194,9 +206,9 @@
 	<link rel='shortcut icon' href='favicon.ico'>
 
 	<?php if (feature("css")): ?>
-		<?php if (feature("fonts")): ?>
-	<link href="//cloud.webtype.com/css/b80b5172-bf3d-4dfd-b20d-1c0fbfabfaa3.css" rel="stylesheet" type="text/css" />
-		<?php endif; ?>
+	<?php if (feature("fonts")): ?>
+	<link rel="stylesheet" href="fonts.css">
+	<?php endif; ?>
 	<link rel="stylesheet" href="style.css" />
 	<?php endif; ?>
 
@@ -220,7 +232,7 @@
 <form>
 	<h1><a href='./'>Size Calculator</a></h1>
 	<!--<h2>Solve for …</h2>-->
-	<p>Enter any two values and click the <?php print $button; ?> to calculate the third.</p>
+	<p>Enter any two values and click the <button type="button"><?php print $button; ?></button> to calculate the third.</p>
 	
 	<div class="solve-for distance" data-what="distance">
 		<h3>
@@ -230,7 +242,7 @@
 		<!--
 		<input type='checkbox' id='distance-lock' value='lock' class='lock'><label class='lock' for='distance-lock' title='Lock this value'></label>
 		-->
-		<input tabindex='2' id='distance-value' type="number" name="distance" value="<?php echo $sizecalc->fieldValue('distance'); ?>">
+		<input tabindex='2' id='distance-value' type="number" name="distance" min="0" step="any" value="<?php echo $sizecalc->fieldValue('distance'); ?>">
 		<select tabindex='2' class='length' id='distance-units' name="distance-units">
 			<?php $sizecalc->printLengthOptions('distance', 3); ?>
 		</select>
@@ -248,7 +260,7 @@
 		<!--
 		<input type='checkbox' id='size-lock' value='lock' class='lock'><label class='lock' for='size-lock' title='Lock this value'></label>
 		-->
-		<input tabindex='2' id='size-value' type="number" name="size" value="<?php echo $sizecalc->fieldValue('size'); ?>">
+		<input tabindex='2' id='size-value' type="number" name="size" min="0" step="any" value="<?php echo $sizecalc->fieldValue('size'); ?>">
 		<select tabindex='2' class='length' id='size-units' name="size-units">
 			<?php $sizecalc->printLengthOptions('size', 3); ?>
 		</select>
@@ -266,7 +278,7 @@
 		<!--
 		<input type='checkbox' id='angle-lock' value='lock' class='lock'><label class='lock' for='angle-lock' title='Lock this value'></label>
 		-->
-		<input tabindex='2' id='angle-value' type="number" name="angle" value="<?php echo $sizecalc->fieldValue('angle'); ?>">
+		<input tabindex='2' id='angle-value' type="number" name="angle" min="0" step="any" value="<?php echo $sizecalc->fieldValue('angle'); ?>">
 		<select tabindex='2' class='angle' id='angle-units' name="angle-units">
 			<?php $sizecalc->printAngleOptions('angle', 3); ?>
 		</select>
@@ -280,22 +292,11 @@
 </form>
 </div>
 
-<div id='illustration_container_container'>
-<div id='illustration_container'>
-	<img id='man' src='man.svg' alt='Man' class='default'>
-	<canvas id='illustration'>
-		For a fancy visualization, view this site in a browser that supports the &lt;canvas&gt; tag: IE 10, Firefox 16, Safari and Chrome are good choices.
-	</canvas>
-</div>
-</div>
+<img id='observer' src='svg.php?d=<?php echo $sizecalc->absoluteValue('distance'); ?>&amp;s=<?php echo $sizecalc->absoluteValue('size'); ?>&amp;a=<?php echo $sizecalc->absoluteValue('angle'); ?>' alt='Visualization'>
 
 <div id='credits'>
-Size Calculator is a project by <a href='http://nicksherman.com/'>Nick Sherman</a> and <a href='http://chrislewis.codes/'>Chris Lewis</a>. Follow <a href='http://twitter.com/SizeCalculator'>@SizeCalculator</a> on Twitter.
+Size&nbsp;Calculator is a project by <a href='http://nicksherman.com/'>Nick&nbsp;Sherman</a> and <a href='http://chrislewis.codes/'>Chris&nbsp;Lewis</a>. Follow&nbsp;<a href='https://twitter.com/SizeCalculator'>@SizeCalculator</a> on&nbsp;Twitter.
 </div>
-
-<div style='visibility:hidden;position:absolute;width:1px;height:1px;top:0;left:-10px;font-family:Scout'>Be a love and load Scout for me</div>
-
-<div id='chrissam42' style='position:absolute;top:0;right:0;'></div>
 
 </body>
 </html>

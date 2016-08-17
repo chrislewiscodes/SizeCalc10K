@@ -6,15 +6,6 @@
 
 //google analytics
 
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-45370560-1', 'sizecalc.com');
-ga('send', 'pageview');
-
-
 function SizeCalculatorClass() {
 	
 	// MULTIPLY to convert FROM units
@@ -91,11 +82,11 @@ function SizeCalculatorClass() {
 				newhash.push("perceived-size=" + $('#perceived-size-value').val() + $('#perceived-size-units').val());
 			newhash.push(SizeCalculator.solvefor + "-units=" + $('#' + SizeCalculator.solvefor + "-units").val());
 
-			if (!SizeCalculator.man.hasClass('default')) {
-				newhash.push('observer=' + encodeURIComponent(SizeCalculator.man.prop('src')));
+			if (!SizeCalculator.observer.hasClass('default')) {
+				newhash.push('observer=' + encodeURIComponent(SizeCalculator.observer.prop('src')));
 				newhash.push('eyeleft=' + SizeCalculator.eyeballratio.left);
 				newhash.push('eyetop=' + SizeCalculator.eyeballratio.top);
-				newhash.push('oheight=' + SizeCalculator.realmanheight);
+				newhash.push('oheight=' + SizeCalculator.realobserverheight);
 			}
 
 			if (SizeCalculator.object) {
@@ -246,130 +237,37 @@ function SizeCalculatorClass() {
 		SizeCalculator.doIllustration();
 	}
 
-	//set up man-replacement stuff
-	this.initTheMan = function(originleft,origintop,realheight) {
-		this.man = $('#man');
-		var w = this.man.width(), h = this.man.height();
-		this.manaspect = w / h;
+	//set up observer-replacement stuff
+	this.initTheObserver = function(originleft,origintop,realheight) {
+		this.observer = $('#observer');
+		var w = this.observer.width(), h = this.observer.height();
+		this.observeraspect = w / h;
 		this.eyeballratio = {'left':originleft || 148/207, 'top':origintop || 70/1024};
-		this.realmanheight = realheight || 67; //inches
+		this.realobserverheight = realheight || 67; //inches
 
 		var posform = function() {
 			var pos = SizeCalculator.illustration.offset();
 			var winwidth = SizeCalculator.illustration.outerWidth();
 			var winheight = SizeCalculator.illustration.outerHeight();
-			var mywidth = $('#replacetheman').outerWidth();
-			var myheight = $('#replacetheman').outerHeight();
+			var mywidth = $('#replacetheobserver').outerWidth();
+			var myheight = $('#replacetheobserver').outerHeight();
 
-			$('#replacetheman').css({
+			$('#replacetheobserver').css({
 				'top': (pos.top + (winheight-myheight)/2) + 'px',
 				'left': (pos.left + (winwidth-mywidth)/2) + 'px',
 				'max-width': (winwidth*0.8) + 'px',
 				'max-height': (winheight*0.8) + 'px'
 			});
 		}
-
-		$('#illustration_container').off('.man').on('click.man',function(evt) {
-			var manpos = SizeCalculator.man.offset();
-			var manw = SizeCalculator.man.width();
-			var manh = SizeCalculator.man.height();
-
-			var illpos = $('#illustration_container').offset();
-			var objpos = {'left':SizeCalculator.boxcorner[0]+illpos.left, 'top':SizeCalculator.boxcorner[1]+illpos.top};
-			var objw = SizeCalculator.textwidth;
-			var objh = SizeCalculator.textheight;
-
-			var man_or_object = null;			
-			if (evt.pageX > manpos.left && evt.pageY > manpos.top && evt.pageX < (manpos.left+manw) && evt.pageY < (manpos.top+manh))
-				man_or_object = 'man';
-			else if (evt.pageX > objpos.left && evt.pageY > objpos.top && evt.pageX < (objpos.left+objw) && evt.pageY < (objpos.top+objh))
-				man_or_object = 'object';
-
-			$('#replacetheman').remove();
-
-			if (!man_or_object)
-				return;
-		
-			$('body').append("<form id='replacetheman'><label>Enter URL of image to replace the " + man_or_object + ":</label><input type='text' name='url'><button type='submit'>Replace</button></form>");
-			
-			setTimeout(function() { $('#replacetheman input[name=url]').focus(); }, 100);
-			
-			posform();
-
-			$('#replacetheman').on('submit',function(evt) {
-				evt.preventDefault();
-				var url = $('#replacetheman input[name=url]').val();
-
-				$('#replacetheman').remove();
-
-			//var url = "http://weknowmemes.com/wp-content/uploads/2011/12/mother-of-god-meme.jpg";
-			//var url = "http://www.hdpaperwall.com/wp-content/uploads/2013/11/ChristmasSantaRetro-GraphicsFairy1red1.jpg";
-
-				if (man_or_object == 'man') {
-					$('body').append("<div id='replacetheman'><div>How tall would this be in real life? <input type='number' name='height'></div><label class='loading'>Loading…</label><img src='" + url + "' class='unloaded'></div>");
-		
-					$('#replacetheman img').on('load',function() {
-						var img = $(this);
-						var div = $('#replacetheman');
-						div.find('input[type=number]').after($('#distance-units').clone(false).attr('id',''));
-						
-						img.removeClass('unloaded');
-						div.find('label.loading').text("Then click the spot in the image where the focal point should be.");
-		
-						//do this twice because first time establishes the image's max size
-						// second one resizes the box around it
-						$('#replacetheman').css('visibility','hidden');
-						posform();
-						posform();
-						$('#replacetheman').css('visibility','');
-		
-					}).on('click',function(evt) {
-						var div = $('#replacetheman');
-						var img = $(this);
-						var corner = img.offset();
-						var imgw = img.width();
-						var imgh = img.height();
-						
-						var distanceratio = SizeCalculator.LENGTH[div.find('select').val()];
-						var distance = parseFloat(div.find('input[name=height]').val())*distanceratio;
-						
-						$('#replacetheman').remove();
-						$('#man').replaceWith(img.attr('id','man'));
-						
-						SizeCalculator.initTheMan((evt.pageX-corner.left)/imgw,(evt.pageY-corner.top)/imgh,distance);
-						SizeCalculator.updateHash();
-						SizeCalculator.doIllustration();
-					});
-				}
-				else //object
-				{
-					SizeCalculator.loadNewObject(url);
-					SizeCalculator.updateHash();
-				}
-			});
-		});
-	}
-
-	this.loadNewObject = function(url) {
-		$('#object').remove();
-		$('#illustration_container').append("<img id='object' src='" + url + "' class='unloaded'>");
-		SizeCalculator.object = $('#object');
-		SizeCalculator.updateHash();
-		SizeCalculator.object.on('load',function() {
-			SizeCalculator.object.removeClass('unloaded');
-			SizeCalculator.objectaspect = SizeCalculator.object.width() / SizeCalculator.object.height();
-			SizeCalculator.doIllustration();
-			SizeCalculator.updateHash();
-		});
 	}
 
 	//this gets run once on page load. sets up invariant things like HTML element references, defaults, colors	
 	this.initIllustration = function() {
-		this.initTheMan();
+		this.initTheObserver();
 		this.container = $('#illustration_container');
 
 		//default pixel sizes
-		this.defaultmanheight = 1024;
+		this.defaultobserverheight = 1024;
 		this.defaulttextheight = 144;
 
 		this.illustration = $('#illustration');
@@ -384,9 +282,9 @@ function SizeCalculatorClass() {
 		this.textwidth = this.defaulttextheight;
 		this.object = null;
 		this.objectaspect = 1;
-		this.setManHeight(this.defaultmanheight);
+		this.setObserverHeight(this.defaultobserverheight);
 		this.windowResize(); //this calls the actual illustration
-		this.man.css('visibility','visible'); //to avoid showing flash of unsized man
+		this.observer.css('visibility','visible'); //to avoid showing flash of unsized observer
 	}
 
 	//set a bunch of stuff that is dependent on the window size
@@ -429,7 +327,7 @@ function SizeCalculatorClass() {
 		}
 
 		//all we have to do is find the "real" physical width of the system and scale it to the screen
-		var realwidth = physical*this.objectaspect + distance + this.realmanheight*this.manaspect*this.eyeballratio.left; //distance of eyeball from edge of canvas
+		var realwidth = physical*this.objectaspect + distance + this.realobserverheight*this.observeraspect*this.eyeballratio.left; //distance of eyeball from edge of canvas
 
 		//conversion factor from "real" units to pixels
 		var scale = this.fullwidth / (realwidth * 96);
@@ -446,20 +344,20 @@ function SizeCalculatorClass() {
 		//further scaling if the text is too big to fit on screen. this cales the whole illustration down so it fits
 		this.scale = Math.min(1,this.fullheight/this.textheight);
 
-		//set the man's height
-		this.setManHeight(this.realmanheight*96*scale);
+		//set the observer's height
+		this.setObserverHeight(this.realobserverheight*96*scale);
 	}
 
 
-	//several things are dependent on the man's height, primarly the position of his eyeball
-	this.setManHeight = function(h) {
-		this.manheight = h * this.scale;
-		this.man.height(this.manheight);
-		this.man.width(this.manheight*this.manaspect);
+	//several things are dependent on the observer's height, primarly the position of his eyeball
+	this.setObserverHeight = function(h) {
+		this.observerheight = h * this.scale;
+		this.observer.height(this.observerheight);
+		this.observer.width(this.observerheight*this.observeraspect);
 
 		this.eyeball = {
-			'left':this.manheight*this.manaspect*this.eyeballratio.left,
-			'top':this.manheight*this.eyeballratio.top
+			'left':this.observerheight*this.observeraspect*this.eyeballratio.left,
+			'top':this.observerheight*this.eyeballratio.top
 		};
 	}
 
@@ -500,7 +398,7 @@ function SizeCalculatorClass() {
 		//CLEAR ALL THE THINGS
 		this.canvas.setTransform(1,0,0,1,0,0);
 		this.canvas.clearRect(0,0,this.fullwidth,this.fullheight);
-		this.man.css('top',0);
+		this.observer.css('top',0);
 		this.container.css('left',0);
 
 		//NOTE TRANSFORMS ARE APPLIED IN REVERSE ORDER
@@ -515,7 +413,7 @@ function SizeCalculatorClass() {
 		//if the text box goes off the top, move everything down
 		if (boxcorner[1] < 0) {
 			this.canvas.translate(0,-boxcorner[1]);
-			this.man.css('top',(-boxcorner[1]*this.scale) + 'px');
+			this.observer.css('top',(-boxcorner[1]*this.scale) + 'px');
 		}
 	
 		if (this.object) {
@@ -619,18 +517,18 @@ $(window).on('load',function() {
 	//initiate values
 
 	//this has to come before the others or it will delete the object from the url
-	var man;
+	var observer;
 	if (/observer=([^&]+)/.test(window.location.hash)) {
-		man = {'url': RegExp.$1};
+		observer = {'url': RegExp.$1};
 	}
 	if (/eyeleft=([^&]+)/.test(window.location.hash)) {
-		man.left = parseFloat(RegExp.$1);
+		observer.left = parseFloat(RegExp.$1);
 	}
 	if (/eyetop=([^&]+)/.test(window.location.hash)) {
-		man.top = parseFloat(RegExp.$1);
+		observer.top = parseFloat(RegExp.$1);
 	}
 	if (/oheight=([^&]+)/.test(window.location.hash)) {
-		man.height = parseFloat(RegExp.$1);
+		observer.height = parseFloat(RegExp.$1);
 	}
 
 	var object;	
@@ -639,11 +537,11 @@ $(window).on('load',function() {
 	}
 
 
-	if (man) {
-		$('#man').replaceWith("<img id='man' src='" + decodeURIComponent(man.url) + "'>");
+	if (observer) {
+		$('#observer').replaceWith("<img id='observer' src='" + decodeURIComponent(observer.url) + "'>");
 		SizeCalculator.updateHash();
-		$('#man').on('load',function() {
-			SizeCalculator.initTheMan(man.left,man.top,man.height);
+		$('#observer').on('load',function() {
+			SizeCalculator.initTheObserver(observer.left,observer.top,observer.height);
 			SizeCalculator.doIllustration();
 		});
 	}
