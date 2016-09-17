@@ -348,7 +348,7 @@ EOF;
 				return trim(preg_replace('/\n(?!\n)/', "\\0\t\t", $out)) . "\n";
 			});
 			
-			if (feature("fonts")) { include("fonts.css"); }
+			#if (feature("fonts")) { include("fonts.css"); }
 			include("style.css");
 			ob_end_flush();
 		?>
@@ -374,71 +374,41 @@ EOF;
 <div id='formwrapper'>
 <form>
 	<h1><a href='./'>Size Calculator</a></h1>
-	<!--<h2>Solve for …</h2>-->
-	<p>Enter any two values and click the <button type="button"><?php print $button; ?></button> to calculate the third.</p>
+	<p>Enter any two values and click <button type="button" aria-disabled="true" tabindex="-1"><?php print $button; ?></button> next to the remaining field that you want to calculate.</p>
 	
 	<div class="solve-for distance" data-what="distance">
-		<h3>
-			<!--<label><input tabindex='1' type="radio" name="solve-for" value="distance">Viewing distance</label>-->
-			Viewing Distance
-		</h3>
-		<!--
-		<input type='checkbox' id='distance-lock' value='lock' class='lock'><label class='lock' for='distance-lock' title='Lock this value'></label>
-		-->
+		<h3>Viewing Distance</h3>
 		<input tabindex='2' id='distance-value' type="number" name="distance" min="0" step="any" value="<?php echo $sizecalc->fieldValue('distance'); ?>">
 		<select tabindex='2' class='length' id='distance-units' name="distance-units">
 			<?php $sizecalc->printLengthOptions('distance', 3); ?>
 		</select>
-		<button name="solve-for" type="submit" value="distance"><?php print $button; ?></button>
-		<!--
-		<input tabindex='3' type="range" name="distance-range">
-		-->
+		<button tabindex="3" name="solve-for" type="submit" value="distance" aria-label="Solve for distance"><?php print $button; ?></button>
 	</div>
 	
 	<div class="solve-for size" data-what="size">
-		<h3>
-			<!--<label><input tabindex='1' type="radio" name="solve-for" value="size">Physical size</label>-->
-			Physical Size
-		</h3>
-		<!--
-		<input type='checkbox' id='size-lock' value='lock' class='lock'><label class='lock' for='size-lock' title='Lock this value'></label>
-		-->
+		<h3>Physical Size</h3>
 		<input tabindex='2' id='size-value' type="number" name="size" min="0" step="any" value="<?php echo $sizecalc->fieldValue('size'); ?>">
 		<select tabindex='2' class='length' id='size-units' name="size-units">
 			<?php $sizecalc->printLengthOptions('size', 3); ?>
 		</select>
-		<button name="solve-for" type="submit" value="size"><?php print $button; ?></button>
-		<!--
-		<input tabindex='3' type="range" name="size-range">
-		-->
+		<button tabindex="3" name="solve-for" type="submit" value="size" aria-label="Solve for physical size"><?php print $button; ?></button>
 	</div>
 	
 	<div class="solve-for angle" data-what="angle">
-		<h3>
-			<!--<label><input tabindex='1' type="radio" name="solve-for" value="angle">Perceived size</label>-->
-			Perceived Size
-		</h3>
-		<!--
-		<input type='checkbox' id='angle-lock' value='lock' class='lock'><label class='lock' for='angle-lock' title='Lock this value'></label>
-		-->
+		<h3>Perceived Size</h3>
 		<input tabindex='2' id='angle-value' type="number" name="angle" min="0" step="any" value="<?php echo $sizecalc->fieldValue('angle'); ?>">
 		<select tabindex='2' class='angle' id='angle-units' name="angle-units">
 			<?php $sizecalc->printAngleOptions('angle', 3); ?>
 		</select>
-		<button name="solve-for" type="submit" value="angle"><?php print $button; ?></button>
-		<!--
-		<input tabindex='3' type="range" name="angle-range" min='1' max='179'>
-		-->
+		<button tabindex="3" name="solve-for" type="submit" value="angle" aria-label="Solve for perceived size"><?php print $button; ?></button>
 	</div>
-	
-	<div class='clearer'></div>
 </form>
 </div>
 
 <?php $sizecalc->printSVG(true); ?>
 
 <div id='credits'>
-Size&nbsp;Calculator is a project by <a href='http://nicksherman.com/'>Nick&nbsp;Sherman</a> and <a href='http://chrislewis.codes/'>Chris&nbsp;Lewis</a>. Follow&nbsp;<a href='https://twitter.com/SizeCalculator'>@SizeCalculator</a> on&nbsp;Twitter.
+Size&nbsp;Calculator is a project by <a href='http://nicksherman.com/'>Nick&nbsp;Sherman</a> and <a href='https://chrislewis.codes/'>Chris&nbsp;Lewis</a>. Follow&nbsp;<a href='https://twitter.com/SizeCalculator'>@SizeCalculator</a> on&nbsp;Twitter.
 </div>
 
 </body>
