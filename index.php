@@ -51,13 +51,26 @@
 				'lightyears' => 3.72461748e17
 			);
 			
-			//always set the values to something sensible even if nonsense was given
-			$this->d = is_numeric($distance) ? (float)$distance : 3;
+			$this->d = is_numeric($distance) && $distance > 0 ? (float)$distance : false;
 			$this->du = isset($this->LENGTH[$dunits]) ? $dunits : 'feet';
-			$this->s = is_numeric($size) ? (float)$size : 12;
+			$this->s = is_numeric($size) && $size > 0 ? (float)$size : false;
 			$this->su = isset($this->LENGTH[$sunits]) ? $sunits : 'inches';
-			$this->a = is_numeric($angle) ? (float)$angle : 18.924644;
+			$this->a = is_numeric($angle) && $angle > 0 ? (float)$angle : false;
 			$this->au = isset($this->ANGLE[$aunits]) ? $aunits : 'degrees';
+			
+			//set defaults if everything is blank
+			if ($this->d === false and $this->a === false and $this->s === false) {
+				$this->d = 3;
+				$this->s = 12;
+				$this->a = 18.925;
+			} else {
+				//if one field is blank, solve for it regardless of what button was clicked
+				if ($this->d === false and $this->s > 0 and $this->a > 0) {
+					$_GET['solve-for'] = 'distance';
+				} else if ($this->s === false and $this->d > 0 and $this->a > 0) {
+					$_GET['solve-for'] = 'size';
+				} # leave angle blank
+			}
 		}
 	
 		public function sliderRange($field) {
