@@ -15,7 +15,6 @@
 	}
 
 	class SizeCalculator {
-		private $sliderFactor = 5;
 		private $precision = 3;
 
 		private $d, $du;
@@ -71,25 +70,6 @@
 					$_GET['solve-for'] = 'size';
 				} # leave angle blank
 			}
-		}
-	
-		public function sliderRange($field) {
-			if ($field === 'angle') {
-				return array(0, M_PI/$this->ANGLE[$this->au]);
-				//'step' => units == 'radians' ? .01 : Math.floor(M_PI/$this->ANGLE[units]/slider.width())
-			} else {
-				return array($this->{$field[0]} / $this->sliderFactor, $this->{$field[0]} * $this->sliderFactor);
-			}
-		}
-		
-		public function sliderMin($field) {
-			$range = $this->sliderRange($field);
-			return $range[0];
-		}
-		
-		public function sliderMax($field) {
-			$range = $this->sliderRange($field);
-			return $range[1];
 		}
 	
 		public function solveFor($field) {
@@ -354,11 +334,6 @@ EOF;
 		?>
 	</style>
 	<?php endif; ?>
-
-	<?php /* if (feature("js") || feature("javascript")): ?>
-	<script src="hidpi-canvas.js"><!-- automatic Retina-zation of canvas drawing --></script>
-	<script src="js.js"></script>
-	<?php endif; */ ?>
 
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
