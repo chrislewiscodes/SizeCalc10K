@@ -1,16 +1,18 @@
 
 * {
-	/* font-family: "Output Sans Web", "Trebuchet MS", sans-serif; */
-	font-family: -apple-system, BlinkMacSystemFont, 
-		"Segoe UI", Roboto, Oxygen, 
-		Ubuntu, Cantarell, "Fira Sans", 
-		"Droid Sans", "Helvetica Neue", sans-serif;
+	font-family: "Output Sans Web", "Trebuchet MS", sans-serif;
 	margin: 0;
 	padding: 0;
 	font-size: 16px;
 	line-height: 1em;
+	font-weight: normal;
+	font-style: normal;
 	text-rendering: optimizeLegibility;
 	-webkit-text-size-adjust: none;
+}
+
+html {
+	overflow: hidden;
 }
 
 body {
@@ -55,7 +57,8 @@ h1, h2, h3, h4 {
 }
 
 h1 a:link, h1 a:hover, h1 a:visited {
-	font-family: Impact, "HelveticaNeue-CondensedBlack", "Arial Black", sans-serif;
+	font-family: "Output Sans Web", Impact, sans-serif;
+	font-weight: 800;
 	font-size: 4em;
 	line-height: .85em;
 	margin-bottom: 0.25em;
@@ -80,15 +83,26 @@ h1 a:link, h1 a:hover, h1 a:visited {
 	}
 }
 
+h2 {
+	font-weight: 800;
+	font-size: 3em;
+}
+
 h3 {
 	font-weight: bold;
 	font-size: 1.2em;
 /*	margin-left: -1.5em; */
 	margin-top: 1em;
-	margin-bottom: 0.5em;
+	margin-bottom: 0.3em;
 }
 
-.solve-for { 
+h3 * {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+
+.solve-for {
 	position: relative;
 	display: inline-block;
 	margin-right: 3em;
@@ -102,15 +116,15 @@ h3 {
 	font-weight: bold;
 }
 
-.distance h3 {
+.distance {
 	color: #FF0000;
 }
 
-.angle h3 {
+.angle {
 	color: #39A848;
 }
 
-.size h3 {
+.size {
 	color: #00ABFF;
 }
 
@@ -154,6 +168,18 @@ label.lock {
 	padding-top: 5px;
 }
 
+input[type="checkbox"] {
+	display: none;
+}
+
+input.lock + label.lock:after {
+	content: "\1f513"; /* unlocked */
+}
+
+input.lock:checked + label.lock:after {
+	content: "\1f512"; /* locked */
+}
+
 button {
 	padding: 0.2em 0.5em;
 }
@@ -178,7 +204,7 @@ li {
 	margin-bottom: 0.5em;
 }
 
-#visualization {
+#observer {
 	position: relative;
 	padding: 1%;
 	width: 98%;
